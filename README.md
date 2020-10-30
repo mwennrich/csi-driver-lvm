@@ -6,8 +6,7 @@ It automatically creates hostPath based persistent volumes on the nodes.
 
 Underneath it creates a LVM logical volume on the local disks. A comma-separated list of grok pattern, which disks to use must be specified.
 
-This CSI driver is derived from https://github.com/kubernetes-csi/csi-driver-host-path and https://github.com/metal-stack/csi-lvm 
-
+This CSI driver is derived from https://github.com/kubernetes-csi/csi-driver-host-path and https://github.com/metal-stack/csi-lvm
 
 **BETA VERSION - use at own risk**
 
@@ -20,14 +19,14 @@ For the special case of block volumes, the filesystem-expansion has to be perfom
 You have to set the devicePattern for your hardware to specify which disks should be used to create the volume group.
 
 ```bash
-helm install mytest helm/csi-driver-lvm --set lvm.devicePattern='/dev/nvme[0-9]n[0-9]'
+helm install mytest charts/csi-driver-lvm --set lvm.devicePattern='/dev/nvme[0-9]n[0-9]'
 ```
 
 Now you can use one of following storageClasses:
 
-* `csi-lvm-sc-mirror`
-* `csi-lvm-sc-linear`
-* `csi-lvm-sc-striped`
+* `csi-driver-lvm-mirror`
+* `csi-driver-lvm-linear`
+* `csi-driver-lvm-striped`
 
 ### Todo ###
 
@@ -39,7 +38,7 @@ TL;DR:
 
 ```bash
 ./start-minikube-on-linux.sh
-helm install mytest helm/csi-driver-lvm --set lvm.devicePattern='/dev/loop[0-1]'
+helm install mytest charts/csi-driver-lvm --set lvm.devicePattern='/dev/loop[0-1]'
 ```
 
 ### Start minikube and create dummy volumes ###
@@ -70,12 +69,12 @@ docker build
 docker push
 ```
 
-Replace metalstack/lvmplugin:latest image in helm/csi-driver-lvm/values.yaml
+Replace metalstack/lvmplugin:latest image in charts/csi-driver-lvm/values.yaml
 
 ### Deploy ###
 
 ```bash
-helm install mytest helm/csi-driver-lvm
+helm install mytest charts/csi-driver-lvm
 ```
 
 ### Test ###

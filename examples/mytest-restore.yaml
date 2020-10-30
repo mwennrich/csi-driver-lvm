@@ -9,6 +9,10 @@ spec:
     requests:
       storage: 100Mi
   storageClassName: csi-driver-lvm-linear
+  dataSource:
+    name: new-snapshot-demo
+    kind: VolumeSnapshot
+    apiGroup: snapshot.storage.k8s.io
 ---
 kind: Pod
 apiVersion: v1
