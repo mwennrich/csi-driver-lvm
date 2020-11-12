@@ -3,6 +3,22 @@ entries:
   csi-driver-lvm:
   - apiVersion: v1
     appVersion: v0.4.0
+    created: "2020-11-12T08:50:14.847194879Z"
+    description: local persistend storage for lvm
+    digest: 2588cb18ccdd96abab2cbe9071012458cb5c562f6e72a9ca2d9823425fbf69fa
+    home: https://metal-stack.io
+    keywords:
+    - storage
+    - block-storage
+    - volume
+    name: csi-driver-lvm
+    sources:
+    - https://github.com/metal-stack
+    urls:
+    - https://github.com/mwennrich/csi-driver-lvm/releases/download/csi-driver-lvm-0.4.1/csi-driver-lvm-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v1
+    appVersion: v0.4.0
     created: "2020-11-12T08:04:43.849903539Z"
     description: local persistend storage for lvm
     digest: ba5fd41f9dc9c995420d4aafff002db3d1c35674569c5f8d6ee7000dab58cfe5
