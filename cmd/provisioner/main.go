@@ -15,6 +15,9 @@ const (
 	flagDevicesPattern = "devices"
 	flagDirectory      = "directory"
 	flagLVMType        = "lvmtype"
+	flagSnapshotName   = "snapshotname"
+	flagS3Parameter    = "s3parameter"
+	flagLvmSnapshotBufferPercentage = "lvmsnapshotbufferpercentage"
 )
 
 func cmdNotFound(c *cli.Context, command string) {
@@ -31,6 +34,8 @@ func main() {
 	p.Commands = []*cli.Command{
 		createLVCmd(),
 		deleteLVCmd(),
+		createSnapshotCmd(),
+		restoreSnapshotCmd(),
 	}
 	p.CommandNotFound = cmdNotFound
 	p.OnUsageError = onUsageError
@@ -38,6 +43,6 @@ func main() {
 	klog.Infof("starting csi-lvmplugin-provisioner")
 
 	if err := p.Run(os.Args); err != nil {
-		klog.Fatalf("Critical error: %v", err)
+		klog.Errorf("Critical error: %v", err)
 	}
 }
