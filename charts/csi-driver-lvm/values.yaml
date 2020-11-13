@@ -11,34 +11,15 @@ lvm:
   driverName: lvm.csi.metal-stack.io
   storageClassStub: csi-driver-lvm
 
-pluginImage:
-  repository: metalstack/lvmplugin
-  tag: v0.4.0
-  pullPolicy: IfNotPresent
-
-provisionerImage:
-  repository: metalstack/csi-lvmplugin-provisioner
-  tag: v0.4.0
-  pullPolicy: IfNotPresent
-
 rbac:
   create: true
   pspEnabled: true
-
-externalImages:
-  csiAttacher: quay.io/k8scsi/csi-attacher:v2.2.0
-  csiResizer: quay.io/k8scsi/csi-resizer:v0.5.0
-  csiNodeDriverRegistrar: quay.io/k8scsi/csi-node-driver-registrar:v1.3.0
-  csiProvisioner: quay.io/k8scsi/csi-provisioner:v1.6.0
-  csiLivenessprobe: quay.io/k8scsi/livenessprobe:v1.1.0
-  csiSnapshotController: k8s.gcr.io/sig-storage/snapshot-controller:v3.0.2
-  csiSnapshotter: quay.io/k8scsi/csi-snapshotter:v3.0.2
 
 snapshots:
   enabled: false
 
   # name of the secret to use (will be created by the helm chart)
-  secret: csi-lvm-s3-snapshot-params
+  secret: csi-driver-lvm-s3-snapshot-params
 
   ## your s3 credentials (will be content of the secret)
   # s3Endpoint: https://s3gateway.example.com
@@ -59,3 +40,23 @@ snapshots:
 
 ## enable, if you want to install storage classes with v0.3.x backward-compatible `csi-lvm-sc-*` names
 compat03x: false
+
+pluginImage:
+  repository: metalstack/lvmplugin
+  tag: v0.4.0
+  pullPolicy: IfNotPresent
+
+provisionerImage:
+  repository: metalstack/csi-lvmplugin-provisioner
+  tag: v0.4.0
+  pullPolicy: IfNotPresent
+
+externalImages:
+  csiAttacher: quay.io/k8scsi/csi-attacher:v2.2.0
+  csiResizer: quay.io/k8scsi/csi-resizer:v0.5.0
+  csiNodeDriverRegistrar: quay.io/k8scsi/csi-node-driver-registrar:v1.3.0
+  csiProvisioner: quay.io/k8scsi/csi-provisioner:v1.6.0
+  csiLivenessprobe: quay.io/k8scsi/livenessprobe:v1.1.0
+  csiSnapshotController: k8s.gcr.io/sig-storage/snapshot-controller:v3.0.2
+  csiSnapshotter: quay.io/k8scsi/csi-snapshotter:v3.0.2
+

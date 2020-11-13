@@ -2,6 +2,6 @@
 
 ## TL;DR
 
-```
-$ helm install my-csi-driver-lvm --namespace default csi-driver-lvm --set lvm.devicePattern='/dev/nvme[0-9]n[0-9]'
+```bash
+helm install csi-driver-lvm csi-driver-lvm -n csi-driver-lvm --repo https://metal-stack.github.io/csi-driver-lvm
 ```

@@ -2,8 +2,8 @@ apiVersion: snapshot.storage.k8s.io/v1beta1
 kind: VolumeSnapshotContent
 metadata:
   annotations:
-    snapshot.storage.kubernetes.io/deletion-secret-name: csi-lvm-s3-snapshot-params
-    snapshot.storage.kubernetes.io/deletion-secret-namespace: default
+    snapshot.storage.kubernetes.io/deletion-secret-name: csi-driver-lvm-s3-snapshot-params
+    snapshot.storage.kubernetes.io/deletion-secret-namespace: csi-driver-lvm
   name: manual-snapshotcontent
 spec:
   deletionPolicy: Delete
@@ -15,8 +15,8 @@ spec:
     name: new-snapshot-demo
     namespace: default
   source:
-    # REPLACE THIS WITH THE EXISTING SNAPSHOT-CONTENT-NAME FROM YOUR OLD CLUSTER (kubectl get snapshotcontents)
-    snapshotHandle: snapshot-546b063b-2315-4958-ae3e-7a7045f3a4a1
+    # REPLACE THIS WITH THE EXISTING SNAPSHOT-CONTENT-NAME FROM YOUR OLD CLUSTER (kubectl get volumesnapshotcontents)
+    snapshotHandle: snapcontent-4e96deac-3749-4895-9ca4-798073ff4748
 ---
 apiVersion: snapshot.storage.k8s.io/v1beta1
 kind: VolumeSnapshot

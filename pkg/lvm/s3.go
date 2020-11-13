@@ -38,6 +38,7 @@ type s3Snapshot struct {
 	VolumeName   string    `json:"volumename"`
 }
 
+// S3Parameter contains all parameters needed for a s3 backend
 type S3Parameter struct {
 	Endpoint   string `json:"endpoint"`
 	AccessKey  string `json:"accesskey"`
@@ -77,11 +78,11 @@ func CreateS3Snapshot(vg string, lv string, snapshotName string, size uint64, s3
 	}()
 
 	if s3SnapshotExists(snapshotName, s3) {
-		return "", fmt.Errorf("A snapshot with name %s already exists", snapshotName)
+		return "", fmt.Errorf("a snapshot with name %s already exists", snapshotName)
 	}
 
 	// lvm: Names starting "snapshot" are reserved.
-	out, err := CreateLVMSnapshot(vg, lv, snapLv,  uint64(float64(size)*float64(lvmSnapshotBufferPercentage)/100))
+	out, err := CreateLVMSnapshot(vg, lv, snapLv, uint64(float64(size)*float64(lvmSnapshotBufferPercentage)/100))
 	if err != nil {
 		return out, err
 	}
@@ -111,7 +112,7 @@ func CreateS3Snapshot(vg string, lv string, snapshotName string, size uint64, s3
 // RestoreS3Snapshot creates a new backup snapshot
 func RestoreS3Snapshot(vg string, lv string, snapshotName string, s3 S3Parameter) (string, error) {
 	if !s3SnapshotExists(snapshotName, s3) {
-		return "", fmt.Errorf("Snapshot %s does not exist", snapshotName)
+		return "", fmt.Errorf("snapshot %s does not exist", snapshotName)
 	}
 
 	restorePath := "/tmp/restore/" + lv
@@ -140,16 +141,18 @@ func RestoreS3Snapshot(vg string, lv string, snapshotName string, s3 S3Parameter
 	return fmt.Sprintf("snapshot %s successfully restored to %s", snapshotName, lv), nil
 }
 
+// DeleteS3Snapshot removes a given snapshot at the s3-backend
 func DeleteS3Snapshot(snapshotName string, s3 S3Parameter) (string, error) {
 
 	snapshots, err := s3ListSnapshots(snapshotName, "", s3)
-	if err != nil || len(snapshots) != 1 {
-		if err != nil {
-			return "", err
-		}
+	if err != nil {
+		return "", err
+	}
+	if len(snapshots) == 0 {
+		return fmt.Sprintf("snapshot %s not found. Already gone?", snapshotName), nil
 	}
 	args := []string{"forget"}
-	args = append(args, "-l", "0", "--prune", snapshots[0].ID)
+	args = append(args, "-l", "0", "--prune", "--no-lock", snapshots[0].ID)
 
 	out, err := execResticCmd("", s3, args...)
 	klog.Infof("restic output: %s", out)
@@ -295,6 +298,7 @@ func execResticCmd(path string, s3 S3Parameter, args ...string) (string, error) 
 	return string(out), err
 }
 
+// EncodeS3Parameter a s3Parameter struct to a base64-encoded json-string
 func EncodeS3Parameter(s3 S3Parameter) string {
 	b, err := json.Marshal(s3)
 	if err != nil {
@@ -303,6 +307,7 @@ func EncodeS3Parameter(s3 S3Parameter) string {
 	return base64.RawStdEncoding.EncodeToString(b)
 }
 
+// DecodeS3Parameter converts a given base64-encoded json-string back to s3Parameter struc
 func DecodeS3Parameter(s3string string) (S3Parameter, error) {
 	var s3 S3Parameter
 

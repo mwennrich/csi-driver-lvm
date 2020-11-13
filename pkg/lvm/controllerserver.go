@@ -475,6 +475,9 @@ func (cs *controllerServer) ListSnapshots(ctx context.Context, req *csi.ListSnap
 	// case 3: no parameter is set, so we return all the snapshots.
 	var snapshots []csi.Snapshot
 	s3snapshots, err := s3ListSnapshots("", req.GetSourceVolumeId(), s3)
+	if err != nil {
+		return nil, err
+	}
 
 	for _, s := range s3snapshots {
 		snapshot := csi.Snapshot{

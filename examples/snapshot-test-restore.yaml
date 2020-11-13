@@ -10,7 +10,7 @@ spec:
       storage: 100Mi
   storageClassName: csi-driver-lvm-linear
   dataSource:
-    name: new-snapshot-demo
+    name: snapshot-demo
     kind: VolumeSnapshot
     apiGroup: snapshot.storage.k8s.io
 ---

@@ -634,6 +634,7 @@ func CreateLVMSnapshot(vg string, lvname string, snapshotname string, size uint6
 	return string(out), err
 }
 
+// DeleteLVMSnapshot deletes a lvm snapshot volume
 func DeleteLVMSnapshot(vg string, snapshotname string) (string, error) {
 	if !vgExists(vg) {
 		return "", fmt.Errorf("volume group %s does not exist", vg)
